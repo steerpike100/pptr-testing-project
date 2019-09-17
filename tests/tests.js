@@ -1,6 +1,8 @@
+//Core Packages
 const puppeteer = require('puppeteer')
 const expect = require('chai').expect
 
+// Helper functions
 const config = require('../lib/config')
 const click = require('../lib/helpers').click
 const typeText = require('../lib/helpers').typeText
@@ -11,12 +13,16 @@ const shouldExist = require('../lib/helpers').shouldExist
 const shouldNotExist = require('../lib/helpers').shouldNotExist
 const getCount = require('../lib/helpers').getCount
 
+// Utility functions
 const utils = require('../lib/utils')
+
+//Pages
 const homePage =  require('../page-objects/home-page')
 const loginPage =  require('../page-objects/login-page')
 const searchResultsPage =  require('../page-objects/search-results-page')
 const feedbackPage =  require('../page-objects/feedback-page')
 const feedbackResultsPage =  require('../page-objects/feedback-results-page')
+const forgottenPasswordPage =  require('../page-objects/forgotten-password-page')
 
 
 describe('My first puppeteer test', () => {
@@ -126,17 +132,17 @@ describe('My first puppeteer test', () => {
 			})
 
 			it('should load forgotten password', async() => {
-				await loadUrl(page, 'http://zero.webappsecurity.com/forgot-password.html')
-				await waitForText(page, '.page-header > h3', "Forgotten Password")
+				await loadUrl(page, config.forgotPasswordURL)
+				await waitForText(page, forgottenPasswordPage.FORGOTTEN_PASSWORD_HEADER, "Forgotten Password")
 			})
 
 			it('should submit email', async() => {
-				await typeText(page, utils.generateEmail(), '#user_email')
-				await click(page,  '.btn-primary')
+				await typeText(page, utils.generateEmail(), forgottenPasswordPage.FORGOTTEN_PASSWORD_EMAIL_FIELD)
+				await click(page,  forgottenPasswordPage.FORGOTTEN_PASSWORD_SUBMIT_BUTTON)
 			})
 			it('should display success message', async() => {
 				await waitForText(page, 
-					'body',  
+					forgottenPasswordPage.FORGOTTEN_PASSWORD_SEARCH_RESULTS_CONTENT,  
 					'Your password will be sent to the following email')
 	
 			})
