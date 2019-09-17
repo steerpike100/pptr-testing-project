@@ -10,8 +10,9 @@ const pressKey = require('../lib/helpers').pressKey
 const shouldExist = require('../lib/helpers').shouldExist
 const shouldNotExist = require('../lib/helpers').shouldNotExist
 const getCount = require('../lib/helpers').getCount
-const generateID = require('../lib/utils').generateID
-const generateNumbers = require('../lib/utils').generateNumbers
+
+const utils = require('../lib/utils')
+
 const LOGIN_FORM = '#login_form'
 
 describe('My first puppeteer test', () => {
@@ -40,55 +41,78 @@ describe('My first puppeteer test', () => {
 	})
 
 	describe('Login Test', () => {
-		it('should navigate to homepage', async() => {
+		it('should navigate to homepage', async () => {
 			await loadUrl(page, config.baseURL)
 			await shouldExist(page, '#online_banking_features')
 		})
 
-		it('should click on sign in button', async() => {
+		it('should click on sign in button', async () => {
 			await click(page, '#signin_button')
 			await shouldExist(page, LOGIN_FORM)
 		})
-		it('should submit login form', async() => {
-			await typeText(page, utils.generateID(), '#user_login')
-			await typeText(page, utils.generateNumbers(), '#user_password')
-			await click(page, '.btn-primary')
-			await shouldExist(page, LOGIN_FORM)
-		})
-		it('should get error message', async() => {
-			await waitForText(page, 'body', 'Login and/or password are wrong.')
-			await shouldExist(page, LOGIN_FORM)
-		})
+		// it('should submit login form', async () => {
+		// 	await typeText(page, utils.generateID(), '#user_login')
+		// 	await typeText(page, utils.generateNumbers(), '#user_password')
+		// 	await click(page, '.btn-primary')
+		// 	await shouldExist(page, LOGIN_FORM)
+		// })
+		// it('should get error message', async () => {
+		// 	await waitForText(page, 'body', 'Login and/or password are wrong.')
+		// 	await shouldExist(page, LOGIN_FORM)
+		// })
 	})
 
-	describe('Search Test', () =>{
-		it('should navigate to the homepage', async () =>{
+	describe('Search Test', () => {
+		it('should navigate to the homepage', async () => {
 			await loadUrl(page, config.baseURL)
 			await shouldExist(page, '#online_banking_features')
 		})
-		
-		it('should submit search phrase', async () =>{
+
+		it('should submit search phrase', async () => {
 			await typeText(page, "hello world", '#searchTerm')
 			await pressKey(page, 'Enter')
 		})
-		it('shoulddisplay search results', async () =>{
+		it('shoulddisplay search results', async () => {
 			await waitForText(page, 'h2', "Search Results")
 			await waitForText(page, 'body', "No results were found for the query")
-			
+
 		})
 	})
 
-	describe('Navbar link tests', () =>{
-		it('Navbar Links Test', async () =>{
+	describe('Navbar link tests', () => {
+		it('should navigate to homepage', async () => {
 			await loadUrl(page, config.baseURL)
 			await shouldExist(page, '#online_banking_features')
 		})
-		it('Should have the correct number of links', async () =>{
+		it('Should have the correct number of links', async () => {
 			//get count of links
 			const numberOfLinks = await getCount(page, '#pages-nav > li')
 			//assert the count
 			expect(numberOfLinks).to.equal(3)
 		})
+	})
+
+	describe('Submit feedback form', () => {
+		it('should navigate to homepage', async () => {
+			await loadUrl(page, config.baseURL)
+			await shouldExist(page, '#online_banking_features')
+		})
+		it('Should click on the feedback links', async () => {
+			await click(page, '#feedback')
+			await shouldExist(page, 'form')
+		})
+		it('Should submit the feedback form', async () => {
+			await typeText(page,"Kaniel", '#name')
+			await typeText(page, utils.generateEmail(), '#email')
+			await typeText(page, "Just Subject", '#subject')
+			await typeText(page, utils.generateID(), '#comment')
+			await click(page, 'input[type="submit"]')
+		})
+		it('SHould display the success message', async () => {
+			await shouldExist(page, "#feedback-title")
+			await shouldExist(page, 'body', "Thank you for your comments")
+		})
+
 	})
 
 })
