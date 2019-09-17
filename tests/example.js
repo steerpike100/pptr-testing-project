@@ -50,16 +50,16 @@ describe('My first puppeteer test', () => {
 			await click(page, '#signin_button')
 			await shouldExist(page, LOGIN_FORM)
 		})
-		// it('should submit login form', async () => {
-		// 	await typeText(page, utils.generateID(), '#user_login')
-		// 	await typeText(page, utils.generateNumbers(), '#user_password')
-		// 	await click(page, '.btn-primary')
-		// 	await shouldExist(page, LOGIN_FORM)
-		// })
-		// it('should get error message', async () => {
-		// 	await waitForText(page, 'body', 'Login and/or password are wrong.')
-		// 	await shouldExist(page, LOGIN_FORM)
-		// })
+		it('should submit login form', async () => {
+			await typeText(page, utils.generateID(), '#user_login')
+			await typeText(page, utils.generateNumbers(), '#user_password')
+			await click(page, '.btn-primary')
+			await shouldExist(page, LOGIN_FORM)
+		})
+		it('should get error message', async () => {
+			await waitForText(page, 'body', 'Login and/or password are wrong.')
+			await shouldExist(page, LOGIN_FORM)
+		})
 	})
 
 	describe('Search Test', () => {
@@ -105,7 +105,7 @@ describe('My first puppeteer test', () => {
 			await typeText(page,"Kaniel", '#name')
 			await typeText(page, utils.generateEmail(), '#email')
 			await typeText(page, "Just Subject", '#subject')
-			await typeText(page, utils.generateID(), '#comment')
+			await typeText(page, "whatever man", '#comment')
 			await click(page, 'input[type="submit"]')
 		})
 		it('SHould display the success message', async () => {
@@ -113,6 +113,30 @@ describe('My first puppeteer test', () => {
 			await shouldExist(page, 'body', "Thank you for your comments")
 		})
 
+		describe('Forgotten password', () =>{
+			it('should navigate to homepage', async () => {
+				await loadUrl(page, config.baseURL)
+				await shouldExist(page, '#online_banking_features')
+			})
+
+			it('should load forgotten password', async() => {
+				await loadUrl(page, 'http://zero.webappsecurity.com/forgot-password.html')
+				await waitForText(page, '.page-header > h3', "Forgotten Password")
+			})
+
+			it('should submit email', async() => {
+				await typeText(page, utils.generateEmail(), '#user_email')
+				await click(page,  '.btn-primary')
+			})
+			it('should display success message', async() => {
+				await waitForText(page, 
+					'body',  
+					'Your password will be sent to the following email')
+	
+			})
+	
+		})
+		
 	})
 
 })
