@@ -9,7 +9,9 @@ const waitForText = require('../lib/helpers').waitForText
 const pressKey = require('../lib/helpers').pressKey
 const shouldExist = require('../lib/helpers').shouldExist
 const shouldNotExist = require('../lib/helpers').shouldNotExist
-const utils = require('../lib/utils')
+const getCount = require('../lib/helpers').getCount
+const generateID = require('../lib/utils').generateID
+const generateNumbers = require('../lib/utils').generateNumbers
 const LOGIN_FORM = '#login_form'
 
 describe('My first puppeteer test', () => {
@@ -53,8 +55,8 @@ describe('My first puppeteer test', () => {
 			await click(page, '.btn-primary')
 			await shouldExist(page, LOGIN_FORM)
 		})
-		it('should	get error message', async() => {
-			await waitForText(page, 'body', 'Login and/or password are wrong')
+		it('should get error message', async() => {
+			await waitForText(page, 'body', 'Login and/or password are wrong.')
 			await shouldExist(page, LOGIN_FORM)
 		})
 	})
@@ -73,6 +75,19 @@ describe('My first puppeteer test', () => {
 			await waitForText(page, 'h2', "Search Results")
 			await waitForText(page, 'body', "No results were found for the query")
 			
+		})
+	})
+
+	describe('Navbar link tests', () =>{
+		it('Navbar Links Test', async () =>{
+			await loadUrl(page, config.baseURL)
+			await shouldExist(page, '#online_banking_features')
+		})
+		it('Should have the correct number of links', async () =>{
+			//get count of links
+			const numberOfLinks = await getCount(page, '#pages-nav > li')
+			//assert the count
+			expect(numberOfLinks).to.equal(3)
 		})
 	})
 
