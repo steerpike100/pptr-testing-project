@@ -17,21 +17,20 @@ const getCount = require('../lib/helpers').getCount
 const utils = require('../lib/utils')
 
 //Pages
-const homePage = require('../page-objects/home-page')
-const loginPage = require('../page-objects/login-page')
-const searchResultsPage = require('../page-objects/search-results-page')
-const feedbackPage = require('../page-objects/feedback-page')
-const feedbackResultsPage = require('../page-objects/feedback-results-page')
-const forgottenPasswordPage = require('../page-objects/forgotten-password-page')
+const homePage =  require('../page-objects/home-page')
+const loginPage =  require('../page-objects/login-page')
+const searchResultsPage =  require('../page-objects/search-results-page')
+const feedbackPage =  require('../page-objects/feedback-page')
+const feedbackResultsPage =  require('../page-objects/feedback-results-page')
+const forgottenPasswordPage =  require('../page-objects/forgotten-password-page')
 
 
-describe('first puppeteer suite', () => {
+describe('My first puppeteer test', () => {
 	let browser
 	let page
 
 	before(async function () {
 		browser = await puppeteer.launch({
-			executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
 			headless: config.isHeadless,
 			slowMo: config.slowMo,
 			devTools: config.isDevTools,
@@ -85,12 +84,12 @@ describe('first puppeteer suite', () => {
 		})
 		it('should display search results', async () => {
 			await waitForText(page, searchResultsPage.SEARCH_RESULTS_TITLE,
-				"Search Results")
+				 "Search Results")
 			await waitForText(page, searchResultsPage.SEARCH_RESULTS_CONTENT,
-				"No results were found for the query")
+				 "No results were found for the query")
 
 		})
-	});
+	})
 
 	describe('Navbar link tests', () => {
 		it('should navigate to homepage', async () => {
@@ -115,7 +114,7 @@ describe('first puppeteer suite', () => {
 			await shouldExist(page, feedbackPage.FEEDBACK_FORM)
 		})
 		it('Should submit the feedback form', async () => {
-			await typeText(page, "Steve", feedbackPage.FORM_NAME)
+			await typeText(page,"Steve", feedbackPage.FORM_NAME)
 			await typeText(page, utils.generateEmail(), feedbackPage.FORM_EMAIL)
 			await typeText(page, "Just Subject", feedbackPage.FORM_SUBJECT)
 			await typeText(page, "whatever man", feedbackPage.FORM_COMMENT)
@@ -126,31 +125,30 @@ describe('first puppeteer suite', () => {
 			await shouldExist(page, feedbackResultsPage.FEEDBACK_RESULTS_CONTENT, "Thank you for your comments")
 		})
 
-		describe('Forgotten password', () => {
+		describe('Forgotten password', () =>{
 			it('should navigate to homepage', async () => {
 				await loadUrl(page, config.baseURL)
 				await shouldExist(page, homePage.BANKING_FEATURES)
 			})
 
-			it('should load forgotten password', async () => {
+			it('should load forgotten password', async() => {
 				await loadUrl(page, config.forgotPasswordURL)
 				await waitForText(page, forgottenPasswordPage.FORGOTTEN_PASSWORD_HEADER, "Forgotten Password")
 			})
 
-			it('should submit email', async () => {
+			it('should submit email', async() => {
 				await typeText(page, utils.generateEmail(), forgottenPasswordPage.FORGOTTEN_PASSWORD_EMAIL_FIELD)
-				await click(page, forgottenPasswordPage.FORGOTTEN_PASSWORD_SUBMIT_BUTTON)
+				await click(page,  forgottenPasswordPage.FORGOTTEN_PASSWORD_SUBMIT_BUTTON)
 			})
-			it('should display success message', async () => {
-				await waitForText(page,
-					forgottenPasswordPage.FORGOTTEN_PASSWORD_SEARCH_RESULTS_CONTENT,
+			it('should display success message', async() => {
+				await waitForText(page, 
+					forgottenPasswordPage.FORGOTTEN_PASSWORD_SEARCH_RESULTS_CONTENT,  
 					'Your password will be sent to the following email')
-
+	
 			})
-
+	
 		})
-
+		
 	})
 
 })
-
