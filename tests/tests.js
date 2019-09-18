@@ -89,7 +89,7 @@ describe('My first puppeteer test', () => {
 				 "No results were found for the query")
 
 		})
-	})
+	});
 
 	describe('Navbar link tests', () => {
 		it('should navigate to homepage', async () => {
