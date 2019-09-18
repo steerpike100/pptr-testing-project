@@ -15,7 +15,7 @@ const utils = require('../lib/utils')
 
 const LOGIN_FORM = '#login_form'
 
-describe('My first puppeteer test', () => {
+describe('Test suite', () => {
 	let browser
 	let page
 
